@@ -2,6 +2,7 @@ package com.monsterb.sampleroom
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.monsterb.sampleroom.db.MyDatabase
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,6 +20,16 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("com.monsterb.sampleroom", appContext.packageName)
+    }
+
+    @Test
+    fun dbTest() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+
+        val db = MyDatabase.getInstance()
+
         assertEquals("com.monsterb.sampleroom", appContext.packageName)
     }
 }
