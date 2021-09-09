@@ -1,8 +1,11 @@
 package com.monsterb.sampleroom
 
+import android.widget.Toast
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.monsterb.sampleroom.db.MyDatabase
+import com.monsterb.sampleroom.db.model.User
+import kotlinx.coroutines.*
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,12 +27,31 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun dbTest() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+    fun dbTest() = runBlocking {
 
-        val db = MyDatabase.getInstance()
+        val job = launch {
+            // Context of the app under test.
+            val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
-        assertEquals("com.monsterb.sampleroom", appContext.packageName)
+            val db = MyDatabase.getInstance(appContext)
+
+
+            for (user in db!!.userDao().getUsers()) {
+                db!!.userDao().delete(user)
+            }
+
+//            CoroutineScope(Dispatchers.IO).launch {
+
+                val user = User("gildong", 23, "Seoul")
+                db!!.userDao().insert(user)
+                assertEquals(1, db!!.userDao().getUsers().size)
+                print(" User cnt " + db!!.userDao().getUsers().size)
+//            }
+
+        }
+
+        job.join()
+
+//        assertEquals("com.monsterb.sampleroom", appContext.packageName)
     }
 }

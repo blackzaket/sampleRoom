@@ -20,6 +20,7 @@ abstract class MyDatabase : RoomDatabase(){
     companion object {
         private var instance: MyDatabase? = null
 
+
         fun getInstance(context: Context): MyDatabase? {
             if (instance == null) {
                 instance = Room.databaseBuilder(context, MyDatabase::class.java, DATABASE).build()
